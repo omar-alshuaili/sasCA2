@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <form action="/login" method="POST">
+        <form id="login-form" action="/login" method="post">
 
             <div class="right"></div>
 
@@ -19,17 +19,21 @@
                 <h1>Welcome back</h1>
                 <div class="email inputs">
                     <label for="email-input">Email</label>
-                    <input type="email" required>
+                    <input name="email" id="email" required>
                 </div>
                 <div class="password-input inputs">
 
                     <label for="password">Password</label>
-                    <input type="password" required>
+                    <input name="password" id="password" type="password" required>
                 </div>
-                <button type="submit">Log in</button>
+                <button type="submit" id="login-button">Log in</button>
+
+               
                 <h5>Don't have account?  <a href="/signup">Sign up</a></h3>
             </div>
+            
         </form>
+        <span id="error-message"></span>
     </div>
 
 

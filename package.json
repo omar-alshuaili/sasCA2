@@ -1,0 +1,26 @@
+{
+  "name": "ca2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omar-alshuaili/sasCA2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omar-alshuaili/sasCA2/issues"
+  },
+  "homepage": "https://github.com/omar-alshuaili/sasCA2#readme",
+  "dependencies": {
+    "express-mysql-session": "^3.0.0",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.2.0"
+  }
+}

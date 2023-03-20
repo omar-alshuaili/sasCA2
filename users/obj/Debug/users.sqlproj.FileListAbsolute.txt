@@ -1,0 +1,9 @@
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/bin/Debug/users.dacpac
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/bin/Debug/users.dll
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/bin/Debug/users.pdb
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/Model.xml
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/refactor.xml
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/postdeploy.sql
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/predeploy.sql
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/users.dll
+/Users/omaralshuaili/Desktop/itsligo/4th/S2/secure/ca2/users/obj/Debug/users.pdb
