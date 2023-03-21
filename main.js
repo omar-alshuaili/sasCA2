@@ -2,7 +2,7 @@
 const passwordInput = document.getElementById('password');
 const errorSpan = document.getElementById('error-message');
 errorSpan.classList.add('error-message');
-const orders = [];
+
 passwordInput.addEventListener('input', () => {
   errorSpan.textContent = ''; // Clear any previous error messages
 });
@@ -16,8 +16,7 @@ form.addEventListener('submit',  (event) => {
 
   const email = formData.get('email');
   const password = formData.get('password');
-
-  
+console.log(window.location.pathname)
 
   fetch('/login', {
     headers: {
@@ -49,31 +48,3 @@ form.addEventListener('submit',  (event) => {
   
 
 });
-
-
-  
-if( window.location.href == '/orders'){
-
-  fetch('/orders', {
-    method: "GET"
-  }).
-  then(res => {
-    console.log(res)
-    if(!res.ok) {
-      return res.text().then(text => {
-         throw new Error(text) 
-        })
-     }
-    else {
-      
-      // orders = res
-    //  window.location.href = '/home'
-     console.log(res.json())
-    }    
-  })
-  .catch(err => {
-    errorSpan.textContent = err
-  });
-  
-  
-}

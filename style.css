@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
-
 html {
   height: 100vh;
 }
@@ -17,12 +16,12 @@ body {
 }
 
 body,
-.container,form {
+.container,
+form {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 
 .container {
   width: 50%;
@@ -32,11 +31,10 @@ body,
   flex-direction: column;
   padding: 2rem;
 }
-form{
+form {
   width: 100%;
 
   flex-direction: row-reverse;
-
 }
 
 .right {
@@ -47,7 +45,6 @@ form{
   background-repeat: no-repeat;
   background-position: center;
   max-width: 50%;
-
 }
 
 .left {
@@ -68,7 +65,7 @@ form{
 }
 
 input {
-  border: 1px solid #D0D5DD;
+  border: 1px solid #d0d5dd;
 
   height: 44px;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
@@ -84,25 +81,24 @@ input {
   width: 100%;
 }
 
-button{
+button {
   width: 100%;
   padding: 10px 18px;
   height: 44px;
   border-radius: 8px;
   border: none;
   font-size: 14px;
-  background-color: rgba(208, 213, 221,0.3);
+  background-color: rgba(208, 213, 221, 0.3);
   opacity: 0.4;
-  border: 1px solid #D0D5DD ;
+  border: 1px solid #d0d5dd;
   cursor: pointer;
 }
-
 
 label {
   color: #667085;
 }
 
-.error-message{
+.error-message {
   padding-block: 1rem;
   color: rgb(245, 59, 59);
 }

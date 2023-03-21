@@ -57,17 +57,19 @@ app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/pages/signup.html');
 });
 
-//orders  
-app.get('/orders', (req, res) => {
 
+//orders 
+app.get('/orders', (req, res) => {
     res.sendFile(__dirname + '/pages/orders.html');
 });
 
-//js
-app.get('*.js', (req, res) => {
-    res.setHeader('Content-Type', mime.contentType('js'));
-    res.sendFile(__dirname + req.path);
-});
+
+// //js
+// app.get('*.js', (req, res) => {
+//     res.setHeader('Content-Type', mime.contentType('js'));
+//     res.sendFile(__dirname + req.path);
+//     console.log(res)
+// });
 
 
 
@@ -145,8 +147,8 @@ app.post('/login', async (req, res) => {
 //     );
 //   });
 
-
-app.get('/orders', (req, res) => {
+app.post('/orders', async (req, res) => {
+   console.log(1)
     if (!req.session.user) {
         res.redirect('/login');
         return;
@@ -168,7 +170,7 @@ app.get('/orders', (req, res) => {
             return;
         }
 
-        let query = 'SELECT * FROM orders';
+        let query = 'SELECT * FROM order_details';
 
         if (isAdmin != 'admin') {
             query += ' WHERE user_id = ?';
@@ -188,6 +190,43 @@ app.get('/orders', (req, res) => {
 
 
 
+app.post('/products', async (req, res) => {
+    console.log(1)
+     if (!req.session.user) {
+         res.redirect('/login');
+         return;
+     }
+     const userId = req.session.user.id;
+     console.log(userId)
+ 
+ 
+     sessionStore.get(userId, (err, session) => {
+         if (err) {
+             console.error(err);
+             res.status(500).send('Internal server error');
+             return;
+         }
+         console.log(session)
+         if (!session) {
+             res.redirect('/');
+             return;
+         }
+ 
+         let query = 'SELECT * FROM products';
+ 
+         
+ 
+         connection.query(query, [userId], (err, result) => {
+             if (err) {
+                 console.error(err);
+                 res.status(500).send('Internal server error');
+                 return;
+             }
+ 
+             res.status(200).send(result);
+         });
+     });
+ });
 
 
 
