@@ -6,12 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CA2 Omar Alshuaili</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="nav.css" />
   </head>
 
   <body>
-    <div class="orders">
-      <div class="row"></div>
-    </div>
+    <header>
+      <nav class="nav">
+        <ul>
+          <li><a href="/account">Account</a></li>
+          <li><a href="/orders">Orders</a></li>
+          <li><a href="/product">Products</a></li>
+          <li><a href="/logout">Log out</a></li>
+        </ul>
+      </nav>
+    </header>
+    <form id="search-form" action="" onsubmit="search()">
+      <input id="search" type="text" name="search" < />
+      <label for="search">search a product</label>
+    </form>
+    <div class="orders"></div>
+    <span class="search-result"></span>
   </body>
   <script src="orders.js"></script>
 </html>

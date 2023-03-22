@@ -14,6 +14,9 @@ body {
   height: 100%;
   width: 100%;
 }
+header {
+  width: 100%;
+}
 
 body,
 .container,
@@ -21,6 +24,11 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+body {
+  justify-content: stretch;
 }
 
 .container {
@@ -101,4 +109,24 @@ label {
 .error-message {
   padding-block: 1rem;
   color: rgb(245, 59, 59);
+}
+
+.orders {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  height: 300px;
+}
+#search-form {
+  padding: 2rem;
+  gap: 1rem;
+}
+#search {
+  max-width: 200px;
+}
+.order-detail-card {
+  padding: 1rem;
+  background-color: #d6d9de;
+  border-radius: 20px;
 }
