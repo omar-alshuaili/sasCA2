@@ -7,6 +7,7 @@ const path = require("path");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 const app = express();
+const bcrypt = require("bcrypt");
 
 const sessionStore = new MySQLStore({
   host: "localhost",
@@ -21,6 +22,9 @@ app.use(
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true, // Set the HttpOnly attribute
+    },
   })
 );
 
@@ -152,6 +156,60 @@ app.post("/login", async (req, res) => {
 //     );
 //   });
 
+/* THIS IS ****NOT**** THE SECURE CODE THAT PREVENTS SQL INDJECTION */
+app.post("/signup", async (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const role = "user";
+
+  const stm =
+    "INSERT INTO users (name, username, password, role) VALUES ('" +
+    name +
+    "', '" +
+    email +
+    "', '" +
+    password +
+    "', '" +
+    role +
+    "')";
+
+  console.log("insecure sql statement: " + stm);
+
+  connection.query(stm, (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.status(200).send("User registered successfully");
+  });
+});
+
+/* THIS IS THE SECURE CODE THAT PREVENTS SQL INDJECTION */
+// app.post("/signup", async (req, res) => {
+//   const name = req.body.name;
+//   const email = req.body.email;
+//   let password = req.body.password;
+//   const role = "user";
+//   // Hash the password
+//   await bcrypt
+//     .hash(password, 10)
+//     .then((hash) => {
+//       console.log("Hash ", hash);
+//       password = hash;
+//     })
+//     .catch((err) => console.error(err.message));
+
+//   const stm =
+//     "INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)";
+
+//   connection.query(stm, [name, email, password, role], (err, result) => {
+//     if (err) {
+//       return res.status(500).send(err);
+//     }
+//     res.status(200).send("User registered successfully");
+//   });
+// });
+
 app.post("/orders", async (req, res) => {
   console.log(req.body);
   if (!req.session.user) {
@@ -173,17 +231,17 @@ app.post("/orders", async (req, res) => {
   }
   console.log("product " + productName + " does not exist! ");
 
-  sessionStore.get(req.session.user.userId, (err, session) => {
+  sessionStore.get(req.session.id, (err, session) => {
     if (err) {
       console.error(err);
       res.status(500).send("Internal server error");
       return;
     }
 
-    // if (!session) {
-    //   res.redirect("/");
-    //   return;
-    // }
+    if (!session) {
+      res.redirect("/");
+      return;
+    }
 
     if (isAdmin != "admin") {
       query += "AND user_id = ?";

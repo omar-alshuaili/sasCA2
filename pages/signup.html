@@ -12,7 +12,7 @@
 
 <body>
     <div class="container">
-        <form action="">
+        <form id="signup-form" action="/signup" method="post">
 
             <div class="right"></div>
 
@@ -21,17 +21,17 @@
 
                 <div class="name inputs">
                     <label for="name">Name</label>
-                    <input type="name" required>
+                    <input name="name" type="name" required>
                 </div>
 
                 <div class="email inputs">
                     <label for="email">Email</label>
-                    <input type="email" required>
+                    <input name="email" type="email" required>
                 </div>
                 <div class="password-input inputs">
 
                     <label for="password">Password</label>
-                    <input type="password" required>
+                    <input name="password" type="password" required>
                 </div>
                 <button type="submit">sign up</button>
                 <h5>Already have account?  <a href="/login">Login</a></h3>
