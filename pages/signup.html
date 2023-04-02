@@ -13,6 +13,7 @@
 <body>
     <div class="container">
         <form id="signup-form" action="/signup" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
             <div class="right"></div>
 
@@ -43,6 +44,6 @@
 
 
 </body>
-<script src="main.js"></script>
+<script src="signup.js"></script>
 
 </html>

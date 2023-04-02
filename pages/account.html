@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="nav.css" />
   </head>
   <header>
     <nav class="nav">
@@ -17,8 +19,16 @@
     </nav>
   </header>
   <body>
-    <input class="account-input" type="text" name="name" />
-    <input class="account-input" type="text" name="email" />
-    <input class="account-input" type="text" />
+    <div class="containet account-data">
+      <span id="success-message" style="color: green"></span>
+      <input type="text" disabled id="email-current" />
+      <h1>Update Email Address</h1>
+      <form action="/change-email" id="update-email-form" method="post">
+        <label for="email">New Email:</label>
+        <input type="email" name="email" id="email" required />
+        <button type="submit">Update Email</button>
+      </form>
+    </div>
   </body>
+  <script src="account.js"></script>
 </html>

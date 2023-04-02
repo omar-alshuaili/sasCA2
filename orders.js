@@ -6,13 +6,16 @@ let searchParams = {
 };
 console.log(searchParams);
 
+searchParams = encodeURIComponent(searchParams);
+
+
 fetch("/orders", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
   },
   credentials: "same-origin",
-  body: JSON.stringify(searchParams),
+  body: JSON.stringify({search: searchParams}),
 })
   .then((res) => {
     if (!res.ok) {
