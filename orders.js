@@ -6,7 +6,7 @@ let searchParams = {
 };
 console.log(searchParams);
 
-searchParams = encodeURIComponent(searchParams);
+// searchParams = encodeURIComponent(searchParams);
 
 
 fetch("/orders", {

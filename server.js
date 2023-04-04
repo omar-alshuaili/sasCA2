@@ -64,7 +64,7 @@ YOU CAN TRY BY GOING TO http://localhost:3000/server.js
 
 */
 // Serve static files from the 'pages' folder ONLY
-// app.use(express.static(path.join(__dirname, "pages")));
+app.use(express.static(path.join(__dirname, "pages")));
 
 
 //this is not safe.
@@ -72,12 +72,12 @@ app.use(express.static(__dirname));
 
 
 
-// app.use(csrf());
-// app.use(function (req, res, next) {
-//   res.cookie("_csrf", req.csrfToken());
-//   res.setHeader("Content-Security-Policy", "frame-ancestors 'none';");
-//   next();
-// });
+app.use(csrf());
+app.use(function (req, res, next) {
+  res.cookie("_csrf", req.csrfToken());
+  res.setHeader("Content-Security-Policy", "frame-ancestors 'none';");
+  next();
+});
 
 //index
 app.get("/", (req, res) => {
@@ -110,122 +110,123 @@ app.get("/account", (req, res) => {
 //     console.log(res)
 // });
 
-/* THIS IS ****NOT**** THE SECURE CODE THAT PREVENTS SQL INDJECTION */
+/* THIS IS  THE SECURE CODE THAT PREVENTS SQL INDJECTION */
 
-// app.post("/login", async (req, res) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
+app.post("/login", async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-//   // Check if user exists
-//   const checkUserStm = "SELECT * FROM users WHERE username = ? ";
-//   connection.query(checkUserStm,[email], (err, users) => {
-//     console.log(users)
-//     if (err) {
-//       console.log(err);
-//       return res.status(500).send(err);
-//     }
-//     if (users && users.length > 0) {
+  // Check if user exists
+  const checkUserStm = "SELECT * FROM users WHERE username = ? ";
+  connection.query(checkUserStm,[email], (err, users) => {
+    console.log(users)
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+    if (users && users.length > 0) {
 
-//       // Check login attempts
-//       const checkAttemptsStm = "SELECT * FROM login_attempts WHERE = ?";
-//       connection.query(checkAttemptsStm, [email], (err, attempts) => {
-//         if (err) {
-//           console.log(err);
-//           return res.status(500).send(err);
-//         }
-
-//         if (attempts[0].attempts >= 3) {
-//           return res.status(403).send("Account locked");
-//         }
-//         const stm =
-//           "SELECT * FROM users WHERE username = ? AND password = ? "
-//         console.log("insecure sql statement: " + stm);
-
-//         connection.query(stm,[email,password], (err, result) => {
-//           if (err) {
-//             console.log(err);
-//             return res.status(500).send(err);
-//           }
-//           if (result && result.length > 0) {
-//             // Reset login attempts
-//             const resetAttemptsStm =
-//               "UPDATE login_attempts SET attempts = 0 WHERE email = ?";
-//             connection.query(resetAttemptsStm, [email], (err, result) => {
-//               if (err) {
-//                 console.log(err);
-//                 return res.status(500).send(err);
-//               }
-//             });
-//           } else {
-//             // Increment login attempts
-//             const incrementAttemptsStm =
-//               "UPDATE login_attempts SET attempts = attempts + 1 WHERE email = ?";
-//             connection.query(incrementAttemptsStm, [email], (err, result) => {
-//               if (err) {
-//                 console.log(err);
-//                 return res.status(500).send(err);
-//               }
-//               return res.status(401).send("Invalid email or password");
-//             });
-//           }
-//         });
-//       });
-//     } else {
-//       return res.status(401).send("Invalid email or password");
-//     }
-//   });
-// });
-
-/* THIS IS THE SECURE CODE THAT PREVENTS SQL INDJECTION */
-app.post('/login', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    const stm =
-    "SELECT * FROM users WHERE username = '" +
-    email +
-    " ' AND password = '" +
-    password +
-    "'";
-  console.log("insecure sql statement: " + stm);
-    connection.query(
-      stm,
-      (err, row) => {
+      // Check login attempts
+      const checkAttemptsStm = "SELECT * FROM login_attempts WHERE email = ?";
+      connection.query(checkAttemptsStm, [email], (err, attempts) => {
         if (err) {
-          console.error(err.message);
-          res.status(500).send(err.message);
-          return;
+          console.log(err);
+          return res.status(500).send(err);
         }
 
-        if (!row) {
-          res.status(401).send('Invalid email or password');
-          return;
-        
+        if (attempts[0].attempts >= 3) {
+          return res.status(403).send("Account locked");
         }
-        const user = {
-          id: row[0].id,
-          username: row[0].username,
-          name: row[0].name,
-          isAdmin: row[0].role,
-        };
-  
-        req.session.regenerate((err) => {
+        const stm =
+          "SELECT * FROM users WHERE username = ? AND password = ? "
+        console.log("insecure sql statement: " + stm);
+
+        connection.query(stm,[email,password], (err, result) => {
           if (err) {
-            console.error(err);
-            return res.status(500).json(err);
+            console.log(err);
+            return res.status(500).send(err);
           }
-          req.session.user = user;
-          sessionStore.set(req.session.id, req.session, (err) => {
-            if (err) {
-              console.error(err);
-              return res.status(500).json(err);
-            }
-            return res.status(200).json(row[0]);
-
-          })
-        })
-      }
-    );
+          if (result && result.length > 0) {
+            // Reset login attempts
+            const resetAttemptsStm =
+              "UPDATE login_attempts SET attempts = 0 WHERE email = ?";
+            connection.query(resetAttemptsStm, [email], (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              }
+            });
+          } else {
+            // Increment login attempts
+            const incrementAttemptsStm =
+              "UPDATE login_attempts SET attempts = attempts + 1 WHERE email = ?";
+            connection.query(incrementAttemptsStm, [email], (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+              }
+              return res.status(401).send("Invalid email or password");
+            });
+          }
+        });
+      });
+    } else {
+      return res.status(401).send("Invalid email or password");
+    }
   });
+});
+
+/* THIS IS ****NOT**** THE SECURE CODE THAT PREVENTS SQL INDJECTION */
+// app.post('/login', (req, res) => {
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const stm =
+//     "SELECT * FROM users WHERE username = '" +
+//     email +
+//     " ' AND password = '" +
+//     password +
+//     "'";
+//   console.log("insecure sql statement: " + stm);
+//     connection.query(
+//       stm,
+//       (err, row) => {
+        
+//         if (err) {
+//           console.error(err.message);
+//           res.status(500).send(err.message);
+//           return;
+//         }
+
+//         if (row.length === 0) {
+//           res.status(401).send('Invalid email or password');
+//           return;
+        
+//         }
+//         const user = {
+//           id: row[0].id,
+//           username: row[0].username,
+//           name: row[0].name,
+//           isAdmin: row[0].role,
+//         };
+  
+//         req.session.regenerate((err) => {
+//           if (err) {
+//             console.error(err);
+//             return res.status(500).json(err);
+//           }
+//           req.session.user = user;
+//           sessionStore.set(req.session.id, req.session, (err) => {
+//             if (err) {
+//               console.error(err);
+//               return res.status(500).json(err);
+//             }
+//             return res.status(200).json(row[0]);
+
+//           })
+//         })
+//       }
+//     );
+//   });
 
 /* THIS IS ****NOT**** THE SECURE CODE THAT PREVENTS SQL INDJECTION */
 app.post("/signup", async (req, res) => {
@@ -258,25 +259,25 @@ app.post("/signup", async (req, res) => {
 //   const name = req.body.name;
 //   const email = req.body.email;
 //   let password = req.body.password;
-  const role = "user";
-  // Hash the password
-  await bcrypt
-    .hash(password, 10)
-    .then((hash) => {
-      console.log("Hash ", hash);
-      password = hash;
-    })
-    .catch((err) => console.error(err.message));
+  // const role = "user";
+  // // Hash the password
+  // await bcrypt
+  //   .hash(password, 10)
+  //   .then((hash) => {
+  //     console.log("Hash ", hash);
+  //     password = hash;
+  //   })
+  //   .catch((err) => console.error(err.message));
 
-  const stm =
-    "INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)";
+  // const stm =
+  //   "INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)";
 
-  connection.query(stm, [name, email, password, role], (err, result) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.status(200).send("User registered successfully");
-  });
+  // connection.query(stm, [name, email, password, role], (err, result) => {
+  //   if (err) {
+  //     return res.status(500).send(err);
+  //   }
+  //   res.status(200).send("User registered successfully");
+  // });
 // });
 
 
